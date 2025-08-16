@@ -87,7 +87,6 @@ main{display:flex;min-height:calc(100vh - 60px)}
 
 .toc-level-2{font-weight:600}
 .toc-level-3{font-weight:500;color:#6c757d}
-.toc-level-4{font-weight:400;color:#868e96;font-size:0.85rem}
 
 .no-headings{
   padding:20px;
