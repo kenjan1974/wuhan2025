@@ -1,11 +1,73 @@
 *{box-sizing:border-box}
 body{font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans CJK TC", "Helvetica Neue", Arial; line-height:1.6; margin:0; color:#222}
-header{display:flex;justify-content:space-between;align-items:center;padding:12px 18px;background:#f4f6f8;border-bottom:1px solid #e6e9ee}
-header h1{margin:0;font-size:1.1rem}
-.toolbar a{margin-left:10px;text-decoration:none;color:#0366d6}
+
+/* Header 響應式設計 */
+header{display:flex;justify-content:space-between;align-items:center;padding:12px 18px;background:#f4f6f8;border-bottom:1px solid #e6e9ee;flex-wrap:wrap}
+header h1{margin:0;font-size:1.1rem;flex:1;min-width:200px}
+.toolbar{display:flex;gap:10px;flex-wrap:wrap}
+.toolbar a{text-decoration:none;color:#0366d6;white-space:nowrap}
+
+/* 主要內容區 */
 main{padding:18px;max-width:980px;margin:auto}
-#content table{width:100%;border-collapse:collapse}
+
+/* 表格響應式設計 */
+#content table{width:100%;border-collapse:collapse;overflow-x:auto;display:block;white-space:nowrap}
 #content table, #content th, #content td{border:1px solid #ddd;padding:6px}
-#content img{max-width:100%;height:auto}
+#content table{display:table;white-space:normal}
+
+/* 圖片響應式 */
+#content img{max-width:100%;height:auto;border-radius:4px}
+
+/* 文字內容響應式 */
+#content{line-height:1.7}
+#content h1{font-size:1.8rem;margin-bottom:0.5rem}
+#content h2{font-size:1.5rem;margin-top:1.5rem;margin-bottom:0.5rem}
+#content h3{font-size:1.3rem;margin-top:1.2rem;margin-bottom:0.5rem}
+#content p{margin-bottom:1rem}
+#content ul, #content ol{padding-left:1.5rem;margin-bottom:1rem}
+
 footer{padding:12px 18px;text-align:center;color:#666;font-size:.9rem;border-top:1px solid #eee}
-@media (max-width:600px){header{padding:10px}main{padding:12px}}
+
+/* 平板裝置 (768px 以下) */
+@media (max-width: 768px) {
+  main{padding:15px}
+  #content h1{font-size:1.6rem}
+  #content h2{font-size:1.4rem}
+  #content h3{font-size:1.2rem}
+  
+  /* 表格在平板上可橫向滾動 */
+  #content table{
+    display:block;
+    overflow-x:auto;
+    white-space:nowrap;
+    -webkit-overflow-scrolling:touch;
+  }
+}
+
+/* 手機裝置 (600px 以下) */
+@media (max-width: 600px) {
+  header{padding:10px;flex-direction:column;align-items:flex-start;gap:10px}
+  header h1{font-size:1rem}
+  .toolbar{justify-content:flex-start;width:100%}
+  
+  main{padding:12px}
+  #content h1{font-size:1.4rem}
+  #content h2{font-size:1.2rem}
+  #content h3{font-size:1.1rem}
+  
+  /* 表格在手機上顯示簡化版本 */
+  #content table, #content thead, #content tbody, #content th, #content td, #content tr {
+    display:block;
+  }
+  #content thead tr{position:absolute;top:-9999px;left:-9999px}
+  #content tr{border:1px solid #ccc;margin-bottom:10px;padding:10px}
+  #content td{border:none;border-bottom:1px solid #eee;position:relative;padding-left:50%}
+  #content td:before{content:attr(data-label) ": ";position:absolute;left:6px;width:45%;padding-right:10px;white-space:nowrap;font-weight:bold}
+}
+
+/* 超小螢幕 (480px 以下) */
+@media (max-width: 480px) {
+  header{padding:8px}
+  main{padding:10px}
+  footer{padding:10px}
+}
