@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>旅遊行程 — 武漢 張家界</title>
+  <link rel="stylesheet" href="style.css" />
+  <!-- marked.js 用於把 Markdown 轉成 HTML -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+<body>
+  <header>
+    <h1 id="page-title">旅遊行程</h1>
+    <div class="toolbar">
+      <a id="edit-on-github" target="_blank" rel="noopener">在 GitHub 編輯</a>
+      <a id="open-repo" target="_blank" rel="noopener">到 Repo</a>
+    </div>
+  </header>
+
+  <main>
+    <article id="content">載入中...</article>
+  </main>
+
+  <footer>
+    <small>若想新增/編輯：請在 GitHub 上修改 `武漢張家界.md` 或上傳圖片到 `/images`。</small>
+  </footer>
+
+<script>
+(async function(){
+  // 設定要讀取的 Markdown 檔名（放在 repo 根目錄）
+  const mdFile = '武漢張家界.md';
+
+  // 區域：根據目前 URL 推斷 GitHub repo 位置（使用者之後可按按鈕手動設定）
+  // 預設值（若你不在 GitHub Pages 頁面直接打開，請手動點 "到 Repo" 設定）
+  const repoInfo = {
+    user: '', // 在此填入 GitHub 使用者或組織名（選填，若空白則 edit 連結不會正確）
+    repo: ''  // Repo 名稱
+  };
+
+  // 更新 toolbar 連結（如果 repo 設定了會顯示 edit 連結）
+  const editBtn = document.getElementById('edit-on-github');
+  const repoBtn = document.getElementById('open-repo');
+  if (repoInfo.user && repoInfo.repo) {
+    const base = `https://github.com/${repoInfo.user}/${repoInfo.repo}`;
+    editBtn.href = base + `/edit/main/${encodeURIComponent(mdFile)}`;
+    editBtn.textContent = '在 GitHub 編輯（建議）';
+    repoBtn.href = base;
+    repoBtn.textContent = '打開 Repo';
+  } else {
+    editBtn.href = '#';
+    editBtn.addEventListener('click', ()=> alert('請先在 index.html 中填入 repoInfo.user 與 repoInfo.repo，或直接用 GitHub 上傳/編輯檔案。'));
+    repoBtn.href = '#';
+  }
+
+  try {
+    // 以相對路徑 fetch，同一 repo 的 GitHub Pages 可以直接讀取
+    const r = await fetch('./' + mdFile);
+    if (!r.ok) throw new Error('讀取 Markdown 檔失敗');
+    const md = await r.text();
+
+    // 轉 Markdown -> HTML
+    const html = marked.parse(md, { gfm: true, breaks: true });
+
+    // 簡單處理：把相對圖片路徑改為 /images/... （假設使用者在 Markdown 內就寫相對路徑）
+    //（已由 Markdown 原始相對路徑處理，若需要額外 gallery 可再擴充）
+
+    document.getElementById('content').innerHTML = html;
+
+    // 可選：把第一個 h1 設為 page title
+    const firstH1 = document.querySelector('#content h1');
+    if (firstH1) document.getElementById('page-title').textContent = firstH1.textContent;
+
+  } catch (err) {
+    document.getElementById('content').textContent = '載入行程失敗：' + err.message;
+  }
+})();
+</script>
+</body>
+</html>
